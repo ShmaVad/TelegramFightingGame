@@ -222,3 +222,18 @@ if (tg) {
 
     console.log("Запущено в Telegram WebApp");
 }
+
+// Проверяем, что запущено в Telegram WebApp
+if (window.Telegram?.WebApp) {
+    // Растягиваем на всю доступную ширину
+    Telegram.WebApp.expand();
+
+    // Блокируем возможность ручного изменения размера
+    Telegram.WebApp.MainButton.hide();
+    Telegram.WebApp.enableClosingConfirmation();
+
+    // Принудительно обновляем размеры при изменении ориентации
+    window.addEventListener('orientationchange', () => {
+        Telegram.WebApp.expand();
+    });
+}

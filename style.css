@@ -265,3 +265,24 @@ body {
         font-size: 12px;
     }
 }
+
+/* Основные стили для WebApp */
+html, body {
+    width: 100%;
+    min-width: 100vw;
+    overflow-x: hidden;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 100%;
+    min-width: 320px; /* Минимальная ширина */
+}
+
+/* Адаптация под разные устройства */
+@media (max-width: 768px) {
+    .controls, .log {
+        width: 100%;
+        padding: 10px;
+    }
+}
