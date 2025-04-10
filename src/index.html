@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ретро Боевик</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="header">
+    <div class="hp-label player-hp" id="playerHPLabel">ИГРОК: 30 ОЗ</div>
+    <div class="hp-label computer-hp" id="computerHPLabel">КОМПЬЮТЕР: 30 ОЗ</div>
+</div>
+
+<div class="main-container">
+    <div class="controls">
+        <div class="control-title">КОМАНДЫ БОЯ</div>
+
+        <div class="control-group">
+            <div class="control-title">АТАКА</div>
+            <div class="radio-group" id="attackGroup">
+                <label class="radio-label">
+                    <input type="radio" name="attack" class="radio-input" value="ГОЛОВА">
+                    ГОЛОВА
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="attack" class="radio-input" value="КОРПУС">
+                    КОРПУС
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="attack" class="radio-input" value="НОГИ">
+                    НОГИ
+                </label>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="control-title">ЗАЩИТА</div>
+            <div class="radio-group" id="defendGroup">
+                <label class="radio-label">
+                    <input type="radio" name="defend" class="radio-input" value="ГОЛОВА">
+                    ГОЛОВА
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="defend" class="radio-input" value="КОРПУС">
+                    КОРПУС
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="defend" class="radio-input" value="НОГИ">
+                    НОГИ
+                </label>
+            </div>
+        </div>
+
+        <button class="fight-button" id="fightButton">БОЙ!</button>
+    </div>
+
+    <div class="log">
+        <div class="log-title">ЖУРНАЛ БОЯ:</div>
+        <div class="log-content" id="logArea"></div>
+    </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

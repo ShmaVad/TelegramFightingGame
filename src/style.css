@@ -1,0 +1,137 @@
+body {
+    background-color: #141428;
+    color: #dcdcdc;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #1a1a2e;
+    border-bottom: 2px solid #646496;
+}
+
+.hp-label {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.player-hp {
+    color: #4CAF50;
+}
+
+.computer-hp {
+    color: #F44336;
+}
+
+.main-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.controls {
+    width: 50%;
+    padding: 20px;
+    background-color: #141428;
+    border-right: 2px solid #646496;
+    overflow-y: auto;
+}
+
+.log {
+    width: 50%;
+    padding: 20px;
+    background-color: #1e1e3c;
+    overflow-y: auto;
+}
+
+.control-group {
+    margin-bottom: 20px;
+    border: 1px solid #646496;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.control-title {
+    color: #FFFF00;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.radio-input {
+    accent-color: #646496;
+}
+
+.fight-button {
+    background-color: #464664;
+    color: white;
+    border: 2px solid #646496;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.fight-button:hover {
+    background-color: #565674;
+}
+
+.fight-button:disabled {
+    background-color: #333344;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.log-title {
+    color: #00FFFF;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.log-content {
+    background-color: #1e1e3c;
+    border: 1px solid #646496;
+    border-radius: 5px;
+    padding: 10px;
+    height: calc(100% - 40px);
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .controls, .log {
+        width: 100%;
+        height: 50%;
+        border-right: none;
+        border-bottom: 2px solid #646496;
+    }
+}
