@@ -7,7 +7,8 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    -webkit-text-size-adjust: 100%; /* Предотвращает автоматическое масштабирование текста на iOS */
+    -webkit-text-size-adjust: 100%;
+    overflow: hidden;
 }
 
 .header {
@@ -16,6 +17,7 @@ body {
     padding: 8px 10px;
     background-color: #1a1a2e;
     border-bottom: 1px solid #646496;
+    flex-shrink: 0;
 }
 
 .hp-label {
@@ -33,9 +35,11 @@ body {
 
 .main-container {
     display: flex;
+    flex-direction: column;
     flex: 1;
     overflow: hidden;
-    flex-direction: column;
+    padding-bottom: 100px;
+    box-sizing: border-box;
 }
 
 .controls {
@@ -44,6 +48,7 @@ body {
     background-color: #141428;
     overflow-y: auto;
     box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .log {
@@ -53,6 +58,9 @@ body {
     overflow-y: auto;
     box-sizing: border-box;
     border-top: 1px solid #646496;
+    flex: 1;
+    min-height: 150px;
+    max-height: calc(50vh - 50px);
 }
 
 .control-group {
@@ -130,7 +138,6 @@ body {
     font-size: 13px;
 }
 
-/* Адаптированные стили для модальных окон */
 .modal {
     display: none;
     position: fixed;
@@ -193,7 +200,6 @@ body {
     background-color: #565674;
 }
 
-/* Адаптированные стили для изображения */
 .footer-container {
     position: fixed;
     left: 8px;
@@ -208,6 +214,7 @@ body {
     border: 1px solid #646496;
     max-width: calc(100% - 16px);
     box-sizing: border-box;
+    height: auto;
 }
 
 .footer-container .image-container {
@@ -251,7 +258,16 @@ body {
     text-decoration: underline;
 }
 
-/* Медиа-запросы для очень маленьких экранов */
+@media (max-width: 768px) {
+    .main-container {
+        padding-bottom: 90px;
+    }
+
+    .log {
+        max-height: calc(50vh - 40px);
+    }
+}
+
 @media (max-width: 480px) {
     .header {
         padding: 6px 8px;
@@ -300,20 +316,16 @@ body {
     }
 }
 
-/* Предотвращение "растягивания" при клике на мобильных устройствах */
-* {
-    -webkit-tap-highlight-color: transparent;
-}
-
-/* Оптимизация для landscape-ориентации */
 @media (orientation: landscape) and (max-height: 500px) {
     .main-container {
         flex-direction: row;
+        padding-bottom: 0;
     }
 
     .controls, .log {
         width: 50%;
         height: 100%;
+        max-height: none;
     }
 
     .log {
@@ -325,9 +337,15 @@ body {
         flex-direction: column;
         align-items: center;
         max-width: 100px;
+        right: 5px;
+        left: auto;
     }
 
     .footer-text {
         display: none;
     }
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
 }
