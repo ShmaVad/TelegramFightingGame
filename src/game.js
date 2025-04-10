@@ -208,3 +208,17 @@ function disableControls() {
 
 // Запуск игры при загрузке страницы
 document.addEventListener('DOMContentLoaded', initGame);
+
+// Проверка запуска в Telegram
+const tg = window.Telegram?.WebApp;
+
+if (tg) {
+    tg.expand(); // Раскрыть на весь экран
+    tg.enableClosingConfirmation(); // Подтверждение закрытия
+
+    tg.MainButton.setText("Меню");
+    tg.MainButton.show();
+    tg.MainButton.onClick(() => tg.close());
+
+    console.log("Запущено в Telegram WebApp");
+}
