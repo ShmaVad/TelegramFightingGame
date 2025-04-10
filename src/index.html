@@ -7,6 +7,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<!-- Модальное окно для ввода имени -->
+<div id="nameModal" class="modal">
+    <div class="modal-content">
+        <h2>Введите ваше имя</h2>
+        <input type="text" id="playerNameInput" maxlength="20" placeholder="Боец">
+        <button id="startGameBtn">Начать бой!</button>
+    </div>
+</div>
+
+<!-- Основной интерфейс игры -->
 <div class="header">
     <div class="hp-label player-hp" id="playerHPLabel">ИГРОК: 30 ОЗ</div>
     <div class="hp-label computer-hp" id="computerHPLabel">КОМПЬЮТЕР: 30 ОЗ</div>
@@ -61,8 +71,17 @@
     </div>
 </div>
 
-<script src="game.js"></script>
+<!-- Модальное окно с результатами -->
+<div id="resultModal" class="modal">
+    <div class="modal-content">
+        <h2 id="resultTitle">Результат</h2>
+        <div id="roundStats"></div>
+        <div id="totalStats"></div>
+        <button id="newFightBtn">Ещё бой!</button>
+    </div>
+</div>
 
+<!-- Подвал с изображением -->
 <div class="footer-container">
     <div class="image-container" id="gameImage">
         <img src="images/testpic.jpg" alt="Game Art">
@@ -72,5 +91,7 @@
         <a href="https://t.me/shmatvad" target="_blank">https://t.me/shmatvad</a>
     </div>
 </div>
+
+<script src="game.js"></script>
 </body>
 </html>

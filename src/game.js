@@ -7,37 +7,64 @@ const fightButton = document.getElementById('fightButton');
 let playerHP = 30;
 let computerHP = 30;
 const targets = ["ГОЛОВА", "КОРПУС", "НОГИ"];
+let playerName = "ИГРОК";
+
+// Статистика
+let stats = {
+    total: 0,
+    wins: 0,
+    draws: 0,
+    losses: 0,
+    playerHits: 0,
+    playerBlocks: 0,
+    computerHits: 0,
+    computerBlocks: 0
+};
+
+// Статистика текущего боя
+let currentRoundStats = {
+    playerHits: 0,
+    playerBlocks: 0,
+    computerHits: 0,
+    computerBlocks: 0
+};
 
 // Инициализация игры
 function initGame() {
-    // Проверка на запуск в Telegram WebApp
-    if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.expand();
-        console.log("Running in Telegram WebApp");
-    } else {
-        console.log("Running in standalone mode");
-    }
+    // Показываем модальное окно с вводом имени
+    document.getElementById('nameModal').style.display = 'block';
 
-    // Добавление приветствия
+    // Обработчик кнопки начала игры
+    document.getElementById('startGameBtn').addEventListener('click', function() {
+        const nameInput = document.getElementById('playerNameInput').value.trim();
+        if (nameInput) {
+            playerName = nameInput.toUpperCase();
+        }
+        document.getElementById('nameModal').style.display = 'none';
+        startNewGame();
+    });
+
+    // Обработчик нажатия Enter
+    document.getElementById('playerNameInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            document.getElementById('startGameBtn').click();
+        }
+    });
+}
+
+function startNewGame() {
+    playerHPLabel.textContent = `${playerName}: ${playerHP} ОЗ`;
     addToLog("------------------------------------------------");
-    addToLog("=== ДОБРО ПОЖАЛОВАТЬ В SHMAVAD COMBATS! ===");
+    addToLog(`=== ДОБРО ПОЖАЛОВАТЬ В SHMAVAD COMBATS, ${playerName}! ===`);
     addToLog("------------------------------------------------");
 
-    // Обработчик кнопки боя
     fightButton.addEventListener('click', performRound);
-
-    // Тестовые данные (можно удалить)
-    console.log("Game initialized successfully");
 }
 
 // Выполнение раунда боя
 function performRound() {
-    console.log("Fight button clicked");
-
     const playerAttack = document.querySelector('input[name="attack"]:checked')?.value;
     const playerDefend = document.querySelector('input[name="defend"]:checked')?.value;
-
-    console.log(`Player attack: ${playerAttack}, defend: ${playerDefend}`);
 
     if (!playerAttack || !playerDefend) {
         alert("Выберите цель для атаки и защиты!");
@@ -52,17 +79,21 @@ function performRound() {
     // Атака игрока
     if (computerDefend !== playerAttack) {
         computerHP -= 3;
-        addToLog("! ВЫ попали по компьютеру на 3 урона!");
+        addToLog(`! ${playerName} попали по компьютеру на 3 урона!`);
+        currentRoundStats.playerHits++;
     } else {
-        addToLog("- Компьютер заблокировал вашу атаку!");
+        addToLog(`- Компьютер заблокировал вашу атаку!`);
+        currentRoundStats.playerBlocks++;
     }
 
     // Атака компьютера
     if (playerDefend !== computerAttack) {
         playerHP -= 3;
-        addToLog("! КОМПЬЮТЕР попал по вам на 3 урона!");
+        addToLog(`! КОМПЬЮТЕР попал по вам на 3 урона!`);
+        currentRoundStats.computerHits++;
     } else {
-        addToLog("- Вы блокировали атаку компьютера!");
+        addToLog(`- Вы блокировали атаку компьютера!`);
+        currentRoundStats.computerBlocks++;
     }
 
     updateHP();
@@ -70,13 +101,16 @@ function performRound() {
     // Проверка условий победы
     if (playerHP <= 0 && computerHP <= 0) {
         addToLog("\n=== НИЧЬЯ! Оба бойца повержены! ===");
-        disableControls();
+        stats.draws++;
+        showResult("НИЧЬЯ!");
     } else if (playerHP <= 0) {
         addToLog("\n=== ВЫ ПРОИГРАЛИ! Компьютер победил! ===");
-        disableControls();
+        stats.losses++;
+        showResult("ПОРАЖЕНИЕ!");
     } else if (computerHP <= 0) {
         addToLog("\n=== ВЫ ПОБЕДИЛИ! Компьютер повержен! ===");
-        disableControls();
+        stats.wins++;
+        showResult("ПОБЕДА!");
     }
 
     addToLog("----------------------------------------");
@@ -84,7 +118,7 @@ function performRound() {
 
 // Обновление HP на экране
 function updateHP() {
-    playerHPLabel.textContent = `ИГРОК: ${Math.max(0, playerHP)} ОЗ`;
+    playerHPLabel.textContent = `${playerName}: ${Math.max(0, playerHP)} ОЗ`;
     computerHPLabel.textContent = `КОМПЬЮТЕР: ${Math.max(0, computerHP)} ОЗ`;
 
     // Изменение цвета при низком HP
@@ -98,6 +132,70 @@ function addToLog(message) {
     logArea.scrollTop = logArea.scrollHeight;
 }
 
+// Показать результаты боя
+function showResult(result) {
+    stats.total++;
+    stats.playerHits += currentRoundStats.playerHits;
+    stats.playerBlocks += currentRoundStats.playerBlocks;
+    stats.computerHits += currentRoundStats.computerHits;
+    stats.computerBlocks += currentRoundStats.computerBlocks;
+
+    // Заполняем модальное окно
+    document.getElementById('resultTitle').textContent = result;
+    document.getElementById('roundStats').innerHTML = `
+        <h3>Статистика раунда:</h3>
+        <p>${playerName}:<br>
+        Удачных атак: ${currentRoundStats.playerHits}<br>
+        Блоков: ${currentRoundStats.playerBlocks}</p>
+        <p>Компьютер:<br>
+        Удачных атак: ${currentRoundStats.computerHits}<br>
+        Блоков: ${currentRoundStats.computerBlocks}</p>
+    `;
+    document.getElementById('totalStats').innerHTML = `
+        <h3>Общая статистика:</h3>
+        <p>Всего боёв: ${stats.total}<br>
+        Побед: ${stats.wins}<br>
+        Ничьих: ${stats.draws}<br>
+        Поражений: ${stats.losses}</p>
+    `;
+
+    // Показываем модальное окно
+    document.getElementById('resultModal').style.display = 'block';
+
+    // Обработчик кнопки "Ещё бой" (сработает только один раз)
+    document.getElementById('newFightBtn').addEventListener('click', resetGame, { once: true });
+
+    // Отключаем элементы управления
+    disableControls();
+}
+
+// Сброс игры для нового боя
+function resetGame() {
+    // Сброс параметров
+    playerHP = computerHP = 30;
+    currentRoundStats = {
+        playerHits: 0,
+        playerBlocks: 0,
+        computerHits: 0,
+        computerBlocks: 0
+    };
+
+    // Очистка интерфейса
+    document.getElementById('resultModal').style.display = 'none';
+    document.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.disabled = false;
+        input.checked = false;
+    });
+    fightButton.disabled = false;
+    updateHP();
+
+    // Очистка лога
+    logArea.textContent = '';
+    addToLog("------------------------------------------------");
+    addToLog(`=== НОВЫЙ БОЙ! ===`);
+    addToLog("------------------------------------------------");
+}
+
 // Отключение элементов управления
 function disableControls() {
     const inputs = document.querySelectorAll('input[type="radio"]');
@@ -108,5 +206,5 @@ function disableControls() {
     fightButton.disabled = true;
 }
 
-// Инициализация игры при загрузке страницы
+// Запуск игры при загрузке страницы
 document.addEventListener('DOMContentLoaded', initGame);
